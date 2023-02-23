@@ -24,28 +24,47 @@ export default function App() {
       .then((result) => console.log(result))
       .catch((error) => console.log("error", error));
   }
+
+  function eliminar(index) {
+    const nuevaLista = [...lista];
+    nuevaLista.splice(index, 1);
+    agregar(nuevaLista);
+  }
+
   useEffect(() => {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/jaqa")
       .then((respuesta) => respuesta.json())
       .then((data) => agregar(data));
-    console.log(lista);
   }, []);
+
+  useEffect(()=>{
+    putApi();
+  }, [lista])
+
   return (
     <div className="App text-center">
       <h1>To Do List!</h1>
       <form
         onSubmit={(evento) => {
           evento.preventDefault()
-          agregar ([...lista, {label:evento.target[0].value, done:false}])
-          putApi();
+          agregar([...lista, { label: evento.target[0].value, done: false }])
         }}
       >
         <input type="text" placeholder="Agregar Tarea" />
       </form>
-      {lista.map((elm, index) => {
-        return <li key={index}> {elm.label}</li>;
-      })}
-      <p className="my-5">te faltan {lista.length} tareas por terminar</p>
+      <ul>
+        {lista.map((elm, index) => {
+          return (
+            <li key={index}>
+              {elm.label}
+              <button onClick={() => eliminar(index)}>Eliminar</button>
+            </li>
+          );
+        })}
+      </ul>
+      <p className="my-5">Te faltan {lista.filter((item) => !item.done).length} tareas por terminar</p>
     </div>
   );
 }
+
+

@@ -57,7 +57,7 @@ export default function App() {
           return (
             <li key={index}>
               {elm.label}
-              <button onClick={() => eliminar(index)}>Eliminar</button>
+              <button onClick={() => eliminar(index)}>X</button>
             </li>
           );
         })}
